@@ -1,0 +1,220 @@
+-- JALZ CLEAN UI (DELTA EXECUTOR)
+
+local ScreenGui = Instance.new("ScreenGui")
+pcall(function()
+    ScreenGui.Parent = game.CoreGui
+end)
+
+ScreenGui.Name = "JalzCleanUI"
+
+-- MAIN
+local Main = Instance.new("Frame")
+Main.Parent = ScreenGui
+Main.Size = UDim2.new(0,500,0,380)
+Main.Position = UDim2.new(0.5,-250,0.5,-190)
+Main.BackgroundColor3 = Color3.fromRGB(30,30,30)
+Main.Active = true
+Main.Draggable = true
+
+Instance.new("UICorner", Main).CornerRadius = UDim.new(0,8)
+
+-- TOP BAR
+local Top = Instance.new("Frame")
+Top.Parent = Main
+Top.Size = UDim2.new(1,0,0,40)
+Top.BackgroundColor3 = Color3.fromRGB(20,20,20)
+
+Instance.new("UICorner", Top).CornerRadius = UDim.new(0,8)
+
+local Title = Instance.new("TextLabel")
+Title.Parent = Top
+Title.Size = UDim2.new(1,-80,1,0)
+Title.Position = UDim2.new(0,10,0,0)
+Title.BackgroundTransparency = 1
+Title.Text = "Jalz Report Menu"
+Title.TextColor3 = Color3.fromRGB(255,255,255)
+Title.TextSize = 18
+Title.Font = Enum.Font.GothamBold
+Title.TextXAlignment = Enum.TextXAlignment.Left
+
+-- MINIMIZE
+local Minimize = Instance.new("TextButton")
+Minimize.Parent = Top
+Minimize.Size = UDim2.new(0,40,1,0)
+Minimize.Position = UDim2.new(1,-80,0,0)
+Minimize.Text = "-"
+Minimize.TextColor3 = Color3.new(1,1,1)
+Minimize.BackgroundTransparency = 1
+Minimize.Font = Enum.Font.GothamBold
+Minimize.TextSize = 18
+
+-- CLOSE
+local Close = Instance.new("TextButton")
+Close.Parent = Top
+Close.Size = UDim2.new(0,40,1,0)
+Close.Position = UDim2.new(1,-40,0,0)
+Close.Text = "X"
+Close.TextColor3 = Color3.fromRGB(255,80,80)
+Close.BackgroundTransparency = 1
+Close.Font = Enum.Font.GothamBold
+Close.TextSize = 18
+
+Close.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
+end)
+
+-- TAB BAR
+local TabBar = Instance.new("Frame")
+TabBar.Parent = Main
+TabBar.Position = UDim2.new(0,0,0,40)
+TabBar.Size = UDim2.new(1,0,0,35)
+TabBar.BackgroundTransparency = 1
+
+local AvatarTab = Instance.new("TextButton")
+AvatarTab.Parent = TabBar
+AvatarTab.Size = UDim2.new(0.5,0,1,0)
+AvatarTab.Text = "Avatar"
+AvatarTab.BackgroundColor3 = Color3.fromRGB(45,45,45)
+AvatarTab.TextColor3 = Color3.new(1,1,1)
+AvatarTab.Font = Enum.Font.Gotham
+AvatarTab.TextSize = 14
+
+Instance.new("UICorner", AvatarTab).CornerRadius = UDim.new(0,6)
+
+local CheatTab = Instance.new("TextButton")
+CheatTab.Parent = TabBar
+CheatTab.Size = UDim2.new(0.5,-5,1,0)
+CheatTab.Position = UDim2.new(0.5,5,0,0)
+CheatTab.Text = "Cheat"
+CheatTab.BackgroundColor3 = Color3.fromRGB(35,35,35)
+CheatTab.TextColor3 = Color3.new(1,1,1)
+CheatTab.Font = Enum.Font.Gotham
+CheatTab.TextSize = 14
+
+Instance.new("UICorner", CheatTab).CornerRadius = UDim.new(0,6)
+
+-- SCROLL
+local Scroll = Instance.new("ScrollingFrame")
+Scroll.Parent = Main
+Scroll.Position = UDim2.new(0,10,0,85)
+Scroll.Size = UDim2.new(1,-20,1,-95)
+Scroll.BackgroundTransparency = 1
+Scroll.ScrollBarThickness = 4
+
+local Layout = Instance.new("UIListLayout")
+Layout.Parent = Scroll
+Layout.Padding = UDim.new(0,6)
+
+Layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+    Scroll.CanvasSize = UDim2.new(0,0,0,Layout.AbsoluteContentSize.Y+10)
+end)
+
+-- MINIMIZE LOGIC
+local minimized = false
+
+Minimize.MouseButton1Click:Connect(function()
+
+    minimized = not minimized
+
+    if minimized then
+        Scroll.Visible = false
+        TabBar.Visible = false
+        Main.Size = UDim2.new(0,500,0,40)
+        Minimize.Text = "+"
+    else
+        Scroll.Visible = true
+        TabBar.Visible = true
+        Main.Size = UDim2.new(0,500,0,380)
+        Minimize.Text = "-"
+    end
+
+end)
+
+-- CREATE MESSAGE
+local function createMessage(text)
+
+    local Frame = Instance.new("Frame")
+    Frame.Parent = Scroll
+    Frame.Size = UDim2.new(1,0,0,40)
+    Frame.BackgroundColor3 = Color3.fromRGB(40,40,40)
+
+    Instance.new("UICorner", Frame).CornerRadius = UDim.new(0,6)
+
+    local Label = Instance.new("TextLabel")
+    Label.Parent = Frame
+    Label.Size = UDim2.new(0.75,0,1,0)
+    Label.BackgroundTransparency = 1
+    Label.Text = text
+    Label.TextColor3 = Color3.new(1,1,1)
+    Label.Font = Enum.Font.Gotham
+    Label.TextSize = 13
+    Label.TextWrapped = true
+
+    local Copy = Instance.new("TextButton")
+    Copy.Parent = Frame
+    Copy.Size = UDim2.new(0.25,-5,0.7,0)
+    Copy.Position = UDim2.new(0.75,5,0.15,0)
+    Copy.Text = "Copy"
+    Copy.BackgroundColor3 = Color3.fromRGB(60,60,60)
+    Copy.TextColor3 = Color3.new(1,1,1)
+    Copy.Font = Enum.Font.GothamBold
+    Copy.TextSize = 13
+
+    Instance.new("UICorner", Copy).CornerRadius = UDim.new(0,6)
+
+    Copy.MouseButton1Click:Connect(function()
+        if setclipboard then
+            setclipboard(text)
+            Copy.Text = "Copied"
+            task.wait(1)
+            Copy.Text = "Copy"
+        end
+    end)
+
+end
+
+-- CLEAR
+local function clear()
+    for _,v in pairs(Scroll:GetChildren()) do
+        if v:IsA("Frame") then
+            v:Destroy()
+        end
+    end
+end
+
+-- LOAD AVATAR
+local function loadAvatar()
+
+    clear()
+
+    AvatarTab.BackgroundColor3 = Color3.fromRGB(60,60,60)
+    CheatTab.BackgroundColor3 = Color3.fromRGB(35,35,35)
+
+    createMessage("This avatar appears inappropriate for a kid-friendly experience.")
+    createMessage("The avatar contains suspicious visual elements.")
+    createMessage("This avatar may violate Roblox avatar rules.")
+    createMessage("The avatar may create discomfort for other players.")
+    createMessage("This avatar should be reviewed by moderation.")
+
+end
+
+-- LOAD CHEAT
+local function loadCheat()
+
+    clear()
+
+    CheatTab.BackgroundColor3 = Color3.fromRGB(60,60,60)
+    AvatarTab.BackgroundColor3 = Color3.fromRGB(35,35,35)
+
+    createMessage("This player may be using exploits.")
+    createMessage("This player shows abnormal movement.")
+    createMessage("This player may be using third-party tools.")
+    createMessage("This player is suspected of cheating.")
+    createMessage("This player disrupts fair gameplay.")
+
+end
+
+AvatarTab.MouseButton1Click:Connect(loadAvatar)
+CheatTab.MouseButton1Click:Connect(loadCheat)
+
+loadAvatar()
